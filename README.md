@@ -1,13 +1,15 @@
 # Ex.05 Design a Website for Server Side Processing
-## Date:12.11.23
+## Date:
 
 ## AIM:
-To design a website to find total surface area of a square prism in server side.
+ To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side. 
+
 
 ## FORMULA:
-Total Surface Area = 2b<sup>2</sup> + 4bh
-<br>b --> Base of Square Prism
-<br>h --> Height of Square Prism
+P = I<sup>2</sup>R
+<br> P --> Power (in watts)
+<br> I --> Intensity
+<br> R --> Resistance
 
 ## DESIGN STEPS:
 
@@ -30,80 +32,72 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 ## PROGRAM :
+
+html
 ```
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset='utf-8'>
-<meta http-equiv='X-UA-Compatible' content='IE=edge'>
-<title>Total surface area of a square prism</title>
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<style type="text/css">
-body 
-{
-background-color:red;
-}
-.edge {
-width: 1440px;
-margin-left: auto;
-margin-right: auto;
-padding-top: 250px;
-padding-left: 300px;
-}
-.box {
-display:block;
-border: Thick dashed lime;
-width: 500px;
-min-height: 300px;
-font-size: 20px;
-background-color:blue;
-}
-.formelt{
-color:orange;
-text-align: center;
-margin-top: 7px;
-margin-bottom: 6px;
-}
-h1
-{
-color:rgb(255, 0, 179);
-text-align: center;
-padding-top: 20px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-<div class="edge">
-<div class="box">
-<h1>Total surface area of a square prism</h1>
-<form method="POST">
-{% csrf_token %}
-<div class="formelt">
-Length : <input type="text" name="length" value="{{l}}"></input>(in m)<br/>
-</div>
-<div class="formelt">
-Breadth : <input type="text" name="breadth" value="{{b}}"></input>(in m)<br/>
-</div>
-<div class="formelt">
-<input type="submit" value="Calculate"></input><br/>
-</div>
-<div class="formelt">
-Area : <input type="text" name="area" value="{{area}}"></input>m<sup>2</sup><br/>
-</div>
-</form>
-</div>
-</div>
+    <h1 align="center">Calculating Power of a Lamp</h1>
+    <form action="{% url 'Result' %}" method="post">
+        {% csrf_token %}
+       
+        <label for="">Intensity : </label>
+        <input type="text" name="intensity-input">
+
+        <br>
+
+        <label for="">Resistance : </label>
+        <input type="text" name="resistance-input">
+
+        <br>
+
+        <button type="submit">Calculate</button>
+
+    </form>  
 </body>
 </html>
-
 ```
 
+views.py
+```
+from django.shortcuts import render
+def home(request):
+    return render(request,'index.html')
+def Power(request):
+    if request.method == 'POST':
+        intensity_value = int(request.POST.get('intensity-input'))
+        resistance_value = int(request.POST.get('resistance-input'))
+        power = (intensity_value**2)*(resistance_value)
+        return render(request,'Result.html',{'output':power})
+```
 
+urls.py
+```
+from django.contrib import admin
+from django.urls import path
+from myapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',views.home,name='home'),
+    path('result',views.Power,name='Result')
+]
+```
 ## SERVER SIDE PROCESSING:
-![Alt text](282306813-604a98fa-f262-4294-b2a0-6806c946c35c.png)
+
+![image](https://github.com/user-attachments/assets/efb3a1b0-9841-4584-be7a-6caaceb24620)
 
 ## HOMEPAGE:
-![Alt text](282306835-888b6429-4d98-47f2-a792-ec272f79d075.png)
 
+![image](https://github.com/user-attachments/assets/8433d031-4df4-419f-83cd-796f8f8e9662)
+
+![image](https://github.com/user-attachments/assets/bbfc7a3a-73af-48d2-91a0-31fa360e8d8d)
 
 ## RESULT:
 The program for performing server side processing is completed successfully.
